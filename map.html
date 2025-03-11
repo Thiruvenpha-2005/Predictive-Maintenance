@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        if (localStorage.getItem("loggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map View - Predictive Maintenance for Water Pipes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        nav {
+            background-color: #90caf9;
+            padding: 20px;
+            text-align: center;
+        }
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #1976d2;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        nav a.logout {
+            background-color: #e57373;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        nav a.logout:hover {
+            background-color: #d32f2f;
+        }
+        .map-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .map-section h1 {
+            color: #1976d2;
+            margin-bottom: 20px;
+        }
+        .map-section img {
+            width: 80%;
+            border: 2px solid #64b5f6;
+            border-radius: 10px;
+        }
+        footer {
+            background-color: #64b5f6;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ✅ Navigation Bar -->
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="map.html">Map View</a>
+            <a href="monitor.html">Monitor</a> <!-- ✅ Monitor Page Added -->
+            <a href="contact.html">Contact</a>
+            <a href="feedback.html">Feedback</a> <!-- ✅ Feedback Page Added -->
+            <a href="#" class="logout" onclick="logout()">Logout</a>
+        </nav>
+
+        <!-- ✅ Map Section -->
+        <div class="map-section">
+            <h1>Colony Map View</h1>
+            <img src="map.JPG" alt="Colony Map">
+        </div>
+
+        <!-- ✅ Footer Section -->
+        <footer>
+            <p>&copy; 2025 Predictive Maintenance for Water Pipes</p>
+        </footer>
+    </div>
+
+<script>
+// ✅ Logout Function
+function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

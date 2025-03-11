@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        if (localStorage.getItem("loggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictive Maintenance for Water Pipes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+        }
+        nav {
+            background-color: #90caf9;
+            padding: 20px;
+            text-align: center;
+        }
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #1976d2;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        nav a.logout {
+            background-color: #e57373;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        nav a.logout:hover {
+            background-color: #d32f2f;
+        }
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+        .map {
+            text-align: center;
+        }
+        .map img {
+            width: 80%;
+            border: 2px solid #64b5f6;
+        }
+        .status {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .status div {
+            padding: 20px;
+            border: 1px solid #90caf9;
+            width: 30%;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .status .red { background-color: #e57373; }
+        .status .yellow { background-color: #fff176; }
+        .status .green { background-color: #81c784; }
+        footer {
+            background-color: #64b5f6;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .contact {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .contact p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ✅ Navigation Bar -->
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="map.html">Map View</a>
+            <a href="monitor.html">Monitor</a> <!-- ✅ Added Monitor Page Link -->
+            <a href="contact.html">Contact</a>
+            <a href="feedback.html">Feedback</a> <!-- ✅ Added Feedback Page Link -->
+            <a href="#" class="logout" onclick="logout()">Logout</a>
+        </nav>
+
+        <!-- ✅ Hero Section -->
+        <div class="hero">
+            <h1>Predictive Maintenance for Water Pipes</h1>
+            <p>Track the health condition of water pipelines in your colony.</p>
+        </div>
+
+        <!-- ✅ Map Section -->
+        <div class="map">
+            <h2>Colony Map View</h2>
+            <img src="map.JPG" alt="Colony Map">
+        </div>
+
+        <!-- ✅ Status Section -->
+        <div class="status">
+            <div class="red">
+                <h3>Red - Emergency</h3>
+                <p>Immediate maintenance required.</p>
+            </div>
+            <div class="yellow">
+                <h3>Yellow - Moderate</h3>
+                <p>Maintenance needed soon.</p>
+            </div>
+            <div class="green">
+                <h3>Green - Good</h3>
+                <p>No maintenance required.</p>
+            </div>
+        </div>
+
+        <!-- ✅ Contact Section -->
+        <div class="contact">
+            <h2>Contact Maintenance Department</h2>
+            <p><strong>Email:</strong> maintenance@colony.com</p>
+            <p><strong>Contact:</strong> +91 9876543210</p>
+        </div>
+
+        <!-- ✅ Footer Section -->
+        <footer>
+            <p>&copy; 2025 Predictive Maintenance for Water Pipes</p>
+        </footer>
+    </div>
+
+<script>
+// ✅ Logout Function
+function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

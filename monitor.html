@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline Monitoring - Predictive Maintenance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        nav {
+            background-color: #90caf9;
+            padding: 20px;
+            text-align: center;
+        }
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #1976d2;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        nav a.logout {
+            background-color: #e57373;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        nav a.logout:hover {
+            background-color: #d32f2f;
+        }
+        .status {
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #1976d2;
+            color: white;
+        }
+        .ok {
+            background-color: #66bb6a;
+            color: white;
+        }
+        .critical {
+            background-color: #fdd835;
+            color: white;
+        }
+        .damaged {
+            background-color: #e57373;
+            color: white;
+        }
+        .download-btn {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            padding: 15px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .download-btn:hover {
+            background-color: #0d47a1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ✅ Final Perfect Navigation Bar -->
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="map.html">Map View</a>
+            <a href="monitor.html">Monitor</a>
+            <a href="contact.html">Contact</a>
+            <a href="feedback.html">Feedback</a>
+            <a href="#" class="logout" onclick="logout()">Logout</a>
+        </nav>
+
+        <h1 style="text-align: center; margin-top: 20px;">Pipeline Monitoring</h1>
+        <p style="text-align: center; color: #1976d2;">Monitoring Pipeline Status in Real-Time</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Pipe ID</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="pipeline-data">
+                <!-- ✅ Dynamic Data Will Load Here -->
+            </tbody>
+        </table>
+
+        <button class="download-btn" onclick="downloadExcel()">Download Report as Excel</button>
+    </div>
+
+<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+<script>
+// ✅ Pipeline Data (Simulated)
+const pipelines = [
+    { id: 1, location: "Street 1", status: "OK" },
+    { id: 2, location: "Street 2", status: "Critical" },
+    { id: 3, location: "Street 3", status: "Damaged" },
+    { id: 4, location: "Street 4", status: "OK" },
+    { id: 5, location: "Street 5", status: "Damaged" },
+    { id: 6, location: "Street 6", status: "Critical" },
+];
+
+// ✅ Function to Load Data and Email Notification
+function loadData() {
+    const tbody = document.getElementById('pipeline-data');
+    tbody.innerHTML = "";
+
+    pipelines.forEach(p => {
+        let statusClass = '';
+        if(p.status === "OK") statusClass = 'ok';
+        if(p.status === "Critical") statusClass = 'critical';
+        if(p.status === "Damaged") statusClass = 'damaged';
+
+        tbody.innerHTML += `
+            <tr>
+                <td>${p.id}</td>
+                <td>${p.location}</td>
+                <td class="${statusClass}">${p.status}</td>
+            </tr>
+        `;
+
+        if(p.status === "Damaged") {
+            sendEmail(p.location, p.id, p.status);
+        }
+    });
+}
+
+// ✅ Auto-Refresh Every 5 Seconds
+setInterval(loadData, 5000);
+loadData();
+
+// ✅ Send Email Function
+function sendEmail(location, id, status) {
+    Email.send({
+        Host: "smtp.elasticemail.com",
+        Username: "your-email@gmail.com",
+        Password: "YOUR_SMTP_PASSWORD",
+        To: "727723euec204@skcet.ac.in,727723euec199@skcet.ac.in",
+        From: "your-email@gmail.com",
+        Subject: "🚨 Pipeline Damage Alert!",
+        Body: `Pipeline ID: ${id} <br>
+               Location: ${location} <br>
+               Status: ${status} <br><br>
+               Please take immediate action to fix this issue.`
+    }).then(
+        message => console.log("Email Sent Successfully")
+    );
+}
+
+// ✅ Download Excel Report
+function downloadExcel() {
+    const ws = XLSX.utils.json_to_sheet(pipelines);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Pipelines");
+
+    XLSX.writeFile(wb, "Pipeline_Report.xlsx");
+}
+
+// ✅ Logout Function (Now Same Like Feedback Page)
+function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+}
+</script>
+
+<script src="https://smtpjs.com/v3/smtp.js"></script>
+</body>
+</html>
