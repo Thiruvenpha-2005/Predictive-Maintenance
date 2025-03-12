@@ -36,16 +36,14 @@
             margin: 0 15px;
             font-weight: bold;
             transition: background-color 0.3s;
+            padding: 10px;
+            border-radius: 5px;
         }
         nav a:hover {
             background-color: #1976d2;
-            padding: 10px;
-            border-radius: 5px;
         }
         nav a.logout {
             background-color: #e57373;
-            padding: 10px;
-            border-radius: 5px;
         }
         nav a.logout:hover {
             background-color: #d32f2f;
@@ -135,9 +133,10 @@
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="map.html">Map View</a>
-            <a href="monitor.html">Monitor</a> <!-- ✅ Added Monitor Page Link -->
+            <a href="monitor.html">Monitor</a>
+            <a href="alert.html">Alert</a>
             <a href="contact.html">Contact</a>
-            <a href="feedback.html">Feedback</a> <!-- ✅ Added Feedback Page Link -->
+            <a href="feedback.html">Feedback</a>
             <a href="#" class="logout" onclick="logout()">Logout</a>
         </nav>
 
@@ -190,27 +189,14 @@ function logout() {
 // ✅ Submit Feedback Function
 function submitFeedback(event) {
     event.preventDefault();
-
-    // Get form data
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const query = document.getElementById('query').value;
     const comment = document.getElementById('comment').value;
-
-    // Create feedback object
-    const feedback = {
-        name,
-        email,
-        query,
-        comment
-    };
-
-    // Store feedback in localStorage
+    const feedback = { name, email, query, comment };
     let feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
     feedbacks.push(feedback);
     localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
-
-    // Alert and reset form
     alert("✅ Feedback submitted successfully!");
     document.querySelector('form').reset();
 }

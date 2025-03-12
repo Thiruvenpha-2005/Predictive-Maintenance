@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerts - Predictive Maintenance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        nav {
+            background-color: #90caf9;
+            padding: 20px;
+            text-align: center;
+        }
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        nav a:hover {
+            background-color: #1976d2;
+        }
+        nav a.logout {
+            background-color: #e57373;
+        }
+        nav a.logout:hover {
+            background-color: #d32f2f;
+        }
+        .alert-box {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none; /* Initially hidden */
+        }
+        .alert-box h2 {
+            text-align: center;
+            color: #1976d2;
+        }
+        .alert-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .alert-list li {
+            background-color: #fdd835;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .alert-list li.critical {
+            background-color: #ff9800;
+            color: white;
+        }
+        .alert-list li.damaged {
+            background-color: #e57373;
+            color: white;
+        }
+        .clear-btn {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .clear-btn:hover {
+            background-color: #0d47a1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="map.html">Map View</a>
+            <a href="monitor.html">Monitor</a>
+            <a href="alert.html" id="alert-nav">Alert</a>
+            <a href="contact.html">Contact</a>
+            <a href="feedback.html">Feedback</a>
+            <a href="#" class="logout" onclick="logout()">Logout</a>
+        </nav>
+
+        <div class="alert-box" id="alert-box">
+            <h2>Pipeline Alerts</h2>
+            <ul class="alert-list" id="alert-list">
+                <!-- Alerts will be dynamically loaded here -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+    const pipelines = [
+        { id: 1, location: "Street 1", status: "OK" },
+        { id: 2, location: "Street 2", status: "Critical" },
+        { id: 3, location: "Street 3", status: "Damaged" },
+        { id: 4, location: "Street 4", status: "OK" },
+        { id: 5, location: "Street 5", status: "Damaged" },
+        { id: 6, location: "Street 6", status: "Critical" },
+    ];
+
+    function loadAlerts() {
+        const alertList = document.getElementById('alert-list');
+        const alertBox = document.getElementById('alert-box');
+        const alertNav = document.getElementById('alert-nav');
+        alertList.innerHTML = "";
+
+        let alertCount = 0;
+        pipelines.forEach(p => {
+            if (p.status === "Critical" || p.status === "Damaged") {
+                alertCount++;
+                let alertClass = p.status === "Critical" ? "critical" : "damaged";
+
+                let listItem = document.createElement("li");
+                listItem.classList.add(alertClass);
+                listItem.innerHTML = `
+                    <span>🚨 Pipeline ${p.id} - ${p.location} (${p.status})</span>
+                    <button class="clear-btn" onclick="clearAlert(this)">Clear</button>
+                `;
+                alertList.appendChild(listItem);
+            }
+        });
+
+        if (alertCount > 0) {
+            alertBox.style.display = "block";
+        } else {
+            alertBox.style.display = "none";
+        }
+
+        // Keep the alert tab always in blue
+        alertNav.innerHTML = "Alert";
+        alertNav.style.backgroundColor = "#1976d2";
+        alertNav.style.color = "white";
+    }
+
+    function clearAlert(button) {
+        let listItem = button.parentElement;
+        listItem.remove();
+        if (document.getElementById('alert-list').children.length === 0) {
+            loadAlerts();
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("loggedIn");
+        window.location.href = "login.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", loadAlerts);
+    </script>
+
+</body>
+</html>

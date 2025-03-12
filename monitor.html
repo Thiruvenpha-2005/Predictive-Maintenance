@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pipeline Monitoring - Predictive Maintenance</title>
+    <title>Pipeline Monitoring</title>
     <style>
         * {
             margin: 0;
@@ -44,12 +44,14 @@
         nav a.logout:hover {
             background-color: #d32f2f;
         }
-        .status {
+        .monitor {
             margin-top: 30px;
+            text-align: center;
         }
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
         table th, table td {
             border: 1px solid #ddd;
@@ -60,139 +62,82 @@
             background-color: #1976d2;
             color: white;
         }
-        .ok {
-            background-color: #66bb6a;
+        .normal {
+            background-color: #81c784;
             color: white;
+        }
+        .warning {
+            background-color: #fdd835;
+            color: black;
         }
         .critical {
-            background-color: #fdd835;
-            color: white;
-        }
-        .damaged {
             background-color: #e57373;
             color: white;
-        }
-        .download-btn {
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            padding: 15px;
-            margin-top: 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .download-btn:hover {
-            background-color: #0d47a1;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- ✅ Final Perfect Navigation Bar -->
         <nav>
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="map.html">Map View</a>
-            <a href="monitor.html">Monitor</a>
+            <a href="monitor.html">Monitor</a> <!-- ✅ Current Page -->
+            <a href="alert.html">Alert</a>
             <a href="contact.html">Contact</a>
             <a href="feedback.html">Feedback</a>
             <a href="#" class="logout" onclick="logout()">Logout</a>
         </nav>
 
-        <h1 style="text-align: center; margin-top: 20px;">Pipeline Monitoring</h1>
-        <p style="text-align: center; color: #1976d2;">Monitoring Pipeline Status in Real-Time</p>
+        <h1 class="monitor">Pipeline Monitoring Dashboard</h1>
+        <p style="text-align: center; color: #1976d2;">Real-time pipeline status updates</p>
 
         <table>
             <thead>
                 <tr>
                     <th>Pipe ID</th>
-                    <th>Location</th>
+                    <th>Pressure (PSI)</th>
+                    <th>Flow Rate (L/min)</th>
                     <th>Status</th>
                 </tr>
             </thead>
-            <tbody id="pipeline-data">
-                <!-- ✅ Dynamic Data Will Load Here -->
-            </tbody>
+            <tbody id="monitor-data"></tbody>
         </table>
-
-        <button class="download-btn" onclick="downloadExcel()">Download Report as Excel</button>
     </div>
 
-<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
-<script>
-// ✅ Pipeline Data (Simulated)
-const pipelines = [
-    { id: 1, location: "Street 1", status: "OK" },
-    { id: 2, location: "Street 2", status: "Critical" },
-    { id: 3, location: "Street 3", status: "Damaged" },
-    { id: 4, location: "Street 4", status: "OK" },
-    { id: 5, location: "Street 5", status: "Damaged" },
-    { id: 6, location: "Street 6", status: "Critical" },
-];
+    <script>
+        const pipelines = [
+            { id: 1, pressure: 45, flowRate: 20, status: "Normal" },
+            { id: 2, pressure: 60, flowRate: 18, status: "Warning" },
+            { id: 3, pressure: 30, flowRate: 10, status: "Critical" },
+            { id: 4, pressure: 50, flowRate: 22, status: "Normal" },
+            { id: 5, pressure: 55, flowRate: 15, status: "Warning" }
+        ];
 
-// ✅ Function to Load Data and Email Notification
-function loadData() {
-    const tbody = document.getElementById('pipeline-data');
-    tbody.innerHTML = "";
+        function loadPipelineData() {
+            const tbody = document.getElementById('monitor-data');
+            tbody.innerHTML = "";
 
-    pipelines.forEach(p => {
-        let statusClass = '';
-        if(p.status === "OK") statusClass = 'ok';
-        if(p.status === "Critical") statusClass = 'critical';
-        if(p.status === "Damaged") statusClass = 'damaged';
-
-        tbody.innerHTML += `
-            <tr>
-                <td>${p.id}</td>
-                <td>${p.location}</td>
-                <td class="${statusClass}">${p.status}</td>
-            </tr>
-        `;
-
-        if(p.status === "Damaged") {
-            sendEmail(p.location, p.id, p.status);
+            pipelines.forEach(pipe => {
+                let statusClass = pipe.status.toLowerCase();
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${pipe.id}</td>
+                        <td>${pipe.pressure}</td>
+                        <td>${pipe.flowRate}</td>
+                        <td class="${statusClass}">${pipe.status}</td>
+                    </tr>
+                `;
+            });
         }
-    });
-}
 
-// ✅ Auto-Refresh Every 5 Seconds
-setInterval(loadData, 5000);
-loadData();
+        loadPipelineData();
 
-// ✅ Send Email Function
-function sendEmail(location, id, status) {
-    Email.send({
-        Host: "smtp.elasticemail.com",
-        Username: "your-email@gmail.com",
-        Password: "YOUR_SMTP_PASSWORD",
-        To: "727723euec204@skcet.ac.in,727723euec199@skcet.ac.in",
-        From: "your-email@gmail.com",
-        Subject: "🚨 Pipeline Damage Alert!",
-        Body: `Pipeline ID: ${id} <br>
-               Location: ${location} <br>
-               Status: ${status} <br><br>
-               Please take immediate action to fix this issue.`
-    }).then(
-        message => console.log("Email Sent Successfully")
-    );
-}
-
-// ✅ Download Excel Report
-function downloadExcel() {
-    const ws = XLSX.utils.json_to_sheet(pipelines);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Pipelines");
-
-    XLSX.writeFile(wb, "Pipeline_Report.xlsx");
-}
-
-// ✅ Logout Function (Now Same Like Feedback Page)
-function logout() {
-    localStorage.removeItem("loggedIn");
-    window.location.href = "login.html";
-}
-</script>
-
-<script src="https://smtpjs.com/v3/smtp.js"></script>
+        function logout() {
+            localStorage.removeItem("loggedIn");
+            window.location.href = "login.html";
+        }
+    </script>
 </body>
 </html>

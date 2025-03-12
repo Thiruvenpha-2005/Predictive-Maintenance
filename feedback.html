@@ -63,12 +63,27 @@
             border-bottom: 1px solid #ddd;
             padding: 15px;
             margin-bottom: 15px;
+            position: relative;
         }
         .feedback:last-child {
             border-bottom: none;
         }
         .feedback p {
             margin: 5px 0;
+        }
+        .delete-btn {
+            background-color: #e57373;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+        .delete-btn:hover {
+            background-color: #d32f2f;
         }
         .btn-container {
             text-align: center;
@@ -97,46 +112,39 @@
 </head>
 <body>
     <div class="container">
-        <!-- ✅ Final Corrected Navigation Bar Same as Monitor Page -->
         <nav>
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="map.html">Map View</a>
             <a href="monitor.html">Monitor</a>
+            <a href="alert.html">Alerts</a>
             <a href="contact.html">Contact</a>
             <a href="feedback.html">Feedback</a>
             <a href="#" class="logout" onclick="logout()">Logout</a>
         </nav>
 
-        <!-- ✅ Feedback Section -->
         <h1>All Feedbacks</h1>
-        <div class="feedback-container" id="feedback-container">
-        </div>
+        <div class="feedback-container" id="feedback-container"></div>
 
-        <!-- ✅ Export Buttons -->
         <div class="btn-container">
             <button onclick="exportToPDF()">📄 Export to PDF</button>
             <button onclick="exportToExcel()">📊 Export to Excel</button>
         </div>
 
-        <!-- ✅ Footer -->
         <footer>
             <p>&copy; 2025 Predictive Maintenance for Water Pipes</p>
         </footer>
     </div>
 
 <script>
-// ✅ Logout Function (Same as Monitor Page)
 function logout() {
     localStorage.removeItem("loggedIn");
     window.location.href = "login.html";
 }
 
-// ✅ Load Feedback from localStorage
 let feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
 const container = document.getElementById("feedback-container");
 
-// ✅ Display Feedbacks
 function loadFeedbacks() {
     container.innerHTML = "";
     if (feedbacks.length === 0) {
@@ -149,34 +157,39 @@ function loadFeedbacks() {
                 <p><strong>Email:</strong> ${f.email}</p>
                 <p><strong>Query:</strong> ${f.query}</p>
                 <p><strong>Comment:</strong> ${f.comment}</p>
+                <button class="delete-btn" onclick="deleteFeedback(${index})">❌ Delete</button>
             </div>`;
         });
     }
 }
 
-// ✅ Export to PDF Function
+function deleteFeedback(index) {
+    if (confirm("Are you sure you want to delete this feedback?")) {
+        feedbacks.splice(index, 1);
+        localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+        loadFeedbacks();
+    }
+}
+
 function exportToPDF() {
     const element = document.getElementById("feedback-container");
     html2pdf().from(element).save("Feedbacks_Report.pdf");
 }
 
-// ✅ Export to Excel Function
 function exportToExcel() {
     const ws = XLSX.utils.book_new();
     const data = [["Name", "Email", "Query", "Comment"]];
-
+    
     feedbacks.forEach(f => {
         data.push([f.name, f.email, f.query, f.comment]);
     });
-
+    
     const sheet = XLSX.utils.aoa_to_sheet(data);
     XLSX.utils.book_append_sheet(ws, sheet, "Feedbacks");
     XLSX.writeFile(ws, "Feedbacks_Report.xlsx");
 }
 
-// ✅ Load Feedbacks on Page Load
 loadFeedbacks();
 </script>
-
 </body>
 </html>

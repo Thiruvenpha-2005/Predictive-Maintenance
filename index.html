@@ -76,6 +76,7 @@
         .status .red { background-color: #e57373; }
         .status .yellow { background-color: #fff176; }
         .status .green { background-color: #81c784; }
+        .status .blue { background-color: #64b5f6; color: white; }
         footer {
             background-color: #64b5f6;
             color: white;
@@ -99,9 +100,10 @@
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="map.html">Map View</a>
-            <a href="monitor.html">Monitor</a> <!-- ✅ Added Monitor Page Link -->
+            <a href="monitor.html">Monitor</a>
+            <a href="alert.html">Alerts</a> <!-- ✅ Alerts Page -->
             <a href="contact.html">Contact</a>
-            <a href="feedback.html">Feedback</a> <!-- ✅ Added Feedback Page Link -->
+            <a href="feedback.html">Feedback</a>
             <a href="#" class="logout" onclick="logout()">Logout</a>
         </nav>
 
@@ -119,9 +121,9 @@
 
         <!-- ✅ Status Section -->
         <div class="status">
-            <div class="red">
-                <h3>Red - Emergency</h3>
-                <p>Immediate maintenance required.</p>
+            <div id="alertStatus" class="blue">
+                <h3>Alert Status</h3>
+                <p id="alertMessage">No Issues Detected</p>
             </div>
             <div class="yellow">
                 <h3>Yellow - Moderate</h3>
@@ -147,6 +149,25 @@
     </div>
 
 <script>
+// ✅ Function to Check and Update Alert Status
+function updateAlertStatus() {
+    let hasIssue = localStorage.getItem("hasIssue") === "true"; // Get issue status from local storage
+
+    let alertStatus = document.getElementById("alertStatus");
+    let alertMessage = document.getElementById("alertMessage");
+
+    if (hasIssue) {
+        alertStatus.className = "red";
+        alertMessage.textContent = "🚨 Emergency! Issue Detected!";
+    } else {
+        alertStatus.className = "blue";
+        alertMessage.textContent = "No Issues Detected";
+    }
+}
+
+// ✅ Call the function on page load
+updateAlertStatus();
+
 // ✅ Logout Function
 function logout() {
     localStorage.removeItem("loggedIn");
