@@ -59,7 +59,7 @@
             margin-bottom: 15px;
             line-height: 1.6;
         }
-        .ppt-link {
+        .video-container {
             text-align: center;
             margin-top: 30px;
         }
@@ -78,10 +78,10 @@
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="map.html">Map View</a>
-            <a href="monitor.html">Monitor</a> <!-- ✅ Monitor Page Added -->
-            <a href="alert.html" id="alert-nav">Alert</a> <!-- ✅ Alert Page -->
+            <a href="monitor.html">Monitor</a>
+            <a href="alert.html" id="alert-nav">Alert</a>
             <a href="contact.html">Contact</a>
-            <a href="feedback.html">Feedback</a> <!-- ✅ Feedback Page Added -->
+            <a href="feedback.html">Feedback</a>
             <a href="#" class="logout" onclick="logout()">Logout</a>
         </nav>
 
@@ -91,13 +91,13 @@
             Our Predictive Maintenance System helps prevent major pipe damages...
         </p>
 
-        <!-- ✅ PPT Download Section -->
-        <div class="ppt-link">
-            <h2>Our PPT Presentation</h2>
-            <a href="Predictive Maintenance.pptx" download>
-                <img src="ppticon.png" alt="PPT Icon">
-                <p>Download Our PPT</p>
-            </a>
+        <!-- ✅ Video Section -->
+        <div class="video-container">
+            <h2>Watch Our Video</h2>
+            <video width="720" controls autoplay>
+                <source src="Predictive Maintenance.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
         <!-- ✅ Footer Section -->
